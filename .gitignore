@@ -64,3 +64,11 @@ Hotel_Registration_System/target/*
 /target/
 /target/*
 target/*
+/target/classes/
+/target/classes/*
+target/classes/*
+/target/classes
+/target/test-classes/
+/target/test-classes/*
+/target/test-classes/
+target/test-classes/*
