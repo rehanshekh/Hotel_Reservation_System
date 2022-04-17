@@ -1,11 +1,11 @@
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
-import java.util.Scanner;
 
 public class HotelReservationTest {
-    Scanner in = new Scanner(System.in);
     HotelReservation reservation = new HotelReservation();
 
     @Test
@@ -15,5 +15,13 @@ public class HotelReservationTest {
             System.out.println("Added Hotel " + hotel.getName() + " to Hotel Reservation System");
             Assert.assertNotNull(hotel);
         }
+    }
+    @Test
+    public void givenDateRange_ShouldReturn_CheapestHotel() {
+        LocalDate startDate = LocalDate.of(2020, Month.SEPTEMBER, 10);
+        LocalDate endDate = LocalDate.of(2020, Month.SEPTEMBER, 11);
+        long lowestRate = reservation.calculateCost(startDate, endDate);
+        System.out.print("Total Rates: "+lowestRate);
+        Assert.assertEquals(220,lowestRate);
     }
 }

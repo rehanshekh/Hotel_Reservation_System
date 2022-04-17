@@ -1,9 +1,12 @@
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Optional;
 
 public class HotelReservation {
-    Scanner in = new Scanner(System.in);
+
     List<String> dateRange = new ArrayList<>();
     List<Hotel> hotelList = new ArrayList<>();
 
@@ -15,12 +18,11 @@ public class HotelReservation {
         System.out.println("Welcome to Hotel Reservation Program");
     }
 
-    public void reservationRange(int range) {
-        for (int i = 1; i <= range; i++) {
-            System.out.println("Enter the " + i + " date of stay");
-            dateRange.add(in.next());
-        }
+    public void reservationRange() {
+        dateRange.add("10Sep2020");
+        dateRange.add("11Sep2020");
     }
+
 
     private void addHotels() {
         Hotel Hotel1 = new Hotel("LakeWood", 110);
@@ -35,5 +37,10 @@ public class HotelReservation {
         return hotelList;
     }
 
+    public long calculateCost(LocalDate startDate, LocalDate endDate) {
+        long numOfDays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
+        Optional<Hotel> cheapestHotel = hotelList.stream().min(Comparator.comparing(Hotel::getRates));
+        System.out.print(cheapestHotel.get().name + ",");
+        return (cheapestHotel.get().rates * numOfDays);
+    }
 }
-
