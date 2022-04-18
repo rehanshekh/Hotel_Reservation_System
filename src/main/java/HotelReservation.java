@@ -11,9 +11,10 @@ import java.util.stream.Stream;
 
 public class HotelReservation {
 
+    double cheapestPrice = 0;
     List<String> dateRange = new ArrayList<>();
     List<Hotel> hotelList = new ArrayList<>();
-
+    List<Hotel> cheapestHotel = new ArrayList<>();
 
     public HotelReservation() {
         addHotels();
@@ -38,7 +39,7 @@ public class HotelReservation {
         hotelList.add(Hotel3);
     }
 
-    public List getList() {
+    public List<Hotel> getList() {
         return hotelList;
     }
 
@@ -84,10 +85,10 @@ public class HotelReservation {
         final int weekdaysNumber = numberOfDays - weekends;
         final int weekendsNumber = weekends;
 
-        final double cheapestPrice = hotelList.stream().mapToDouble(hotel -> ((hotel.getWeekEndRates() * weekendsNumber + hotel.getRates() * weekdaysNumber)))
+        cheapestPrice = hotelList.stream().mapToDouble(hotel -> ((hotel.getWeekEndRates() * weekendsNumber + hotel.getRates() * weekdaysNumber)))
                 .min().orElse(Double.MAX_VALUE);
 
-        ArrayList<Hotel> cheapestHotel = hotelList.stream()
+        cheapestHotel = hotelList.stream()
                 .filter(hotel -> (hotel.getWeekEndRates() * weekendsNumber + hotel.getRates() * weekdaysNumber) == cheapestPrice)
                 .collect(Collectors.toCollection(ArrayList::new));
 
@@ -122,5 +123,13 @@ public class HotelReservation {
         }).collect(Collectors.toCollection(ArrayList::new));
         return ratedList;
     }
+
+
+    public Hotel getCheapestRatedHotel(LocalDate startDate, LocalDate endDate) {
+        Optional<Hotel> sortedHotelList = cheapestHotel.stream().max(Comparator.comparing(Hotel::getRatings));
+        System.out.println("Cheapest Best Rated Hotel : \n" + sortedHotelList.get().getName() + ", Rating:" + sortedHotelList.get().getRatings() + " and Total Rates:$"+cheapestPrice);
+        return sortedHotelList.get();
+    }
 }
+
 
