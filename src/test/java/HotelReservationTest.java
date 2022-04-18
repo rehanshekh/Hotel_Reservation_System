@@ -1,9 +1,12 @@
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -14,7 +17,7 @@ public class HotelReservationTest {
     Stream<Hotel> hotel = reservation.updateWeekendRates();
 
     @Test
-    @Order(value=1)
+    @Order(value = 1)
     public void WhenAddedHotelData_ToHotelReservationSystem_ShouldNotReturnNull() {
         List<Hotel> hotels = reservation.getList();
         for (Hotel hotel : hotels) {
@@ -48,8 +51,8 @@ public class HotelReservationTest {
 
     @Test
     @Order(4)
-    public void ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ() {
-        int count=1;
+    public void givenDateRangeWithWeekDayWeekEnd_ShouldReturn_CheapestHotel() {
+        int count = 1;
         WhenAddedHotelData_ToHotelReservationSystem_ShouldNotReturnNull();
         givenDateRange_ShouldReturn_CheapestHotel();
         WhenAddedRates_ToEachHotel_ShouldUpdateIt();
@@ -58,8 +61,20 @@ public class HotelReservationTest {
         String cheapestHotel = reservation.getCheapestHotel(startDate, endDate, count);
         Assert.assertEquals("LakeWood", cheapestHotel);
         count++;
-        cheapestHotel = reservation.getCheapestHotel(startDate,endDate,count);
-        Assert.assertEquals("BridgeWood",cheapestHotel);
+        cheapestHotel = reservation.getCheapestHotel(startDate, endDate, count);
+        Assert.assertEquals("BridgeWood", cheapestHotel);
     }
 
+    @Test
+    public void WhenAddedRatings_ShouldUpdate_EachHotel() {
+        givenDateRangeWithWeekDayWeekEnd_ShouldReturn_CheapestHotel();
+        ArrayList<Hotel> ratedList = reservation.updateRatings();
+        for (Hotel hotel : ratedList) {
+            switch (hotel.getName()) {
+                case "LakeWood" -> Assert.assertEquals(3, hotel.getRatings());
+                case "BridgeWood" -> Assert.assertEquals(4, hotel.getRatings());
+                case "RidgeWood" -> Assert.assertEquals(5, hotel.getRatings());
+            }
+        }
+    }
 }

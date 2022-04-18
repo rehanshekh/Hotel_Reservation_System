@@ -69,7 +69,7 @@ public class HotelReservation {
         return hotel;
     }
 
-    public String getCheapestHotel(LocalDate startDate, LocalDate endDate,int count) {
+    public String getCheapestHotel(LocalDate startDate, LocalDate endDate, int count) {
         int numberOfDays = (int) ChronoUnit.DAYS.between(startDate, endDate);
         int weekends = 0;
 
@@ -92,11 +92,35 @@ public class HotelReservation {
                 .collect(Collectors.toCollection(ArrayList::new));
 
         if (count <= cheapestHotel.size()) {
-            System.out.println("Cheapest Hotel : \n" + cheapestHotel.get(count-1).getName() + ", Total Rates: " + cheapestPrice);
-            return cheapestHotel.get(count-1).getName();
+            System.out.println("Cheapest Hotel : \n" + cheapestHotel.get(count - 1).getName() + ", Total Rates: " + cheapestPrice);
+            return cheapestHotel.get(count - 1).getName();
 
         }
         return null;
+    }
+
+    public ArrayList<Hotel> updateRatings() {
+        ArrayList<Hotel> ratedList = hotelList.stream().filter(n -> {
+            switch (n.getName()) {
+                case "LakeWood" -> {
+                    n.setRatings(3);
+                    System.out.println(n.getName() + " is " + n.getRatings());
+                    return true;
+                }
+                case "BridgeWood" -> {
+                    n.setRatings(4);
+                    System.out.println(n.getName() + " is " + n.getRatings());
+                    return true;
+                }
+                case "RidgeWood" -> {
+                    n.setRatings(5);
+                    System.out.println(n.getName() + " is " + n.getRatings());
+                    return true;
+                }
+            }
+            return false;
+        }).collect(Collectors.toCollection(ArrayList::new));
+        return ratedList;
     }
 }
 
