@@ -77,13 +77,35 @@ public class HotelReservationTest {
             }
         }
     }
-    @Test
-    public void givenDateRange_ShouldReturn_bestRatedHotel(){
-        WhenAddedRatings_ShouldUpdate_EachHotel();
-        LocalDate startDate = LocalDate.of(2020, Month.SEPTEMBER, 11);
-        LocalDate endDate = LocalDate.of(2020, Month.SEPTEMBER, 13);
-        Hotel cheapestRatedHotel = reservation.getCheapestRatedHotel(startDate, endDate);
-        Assert.assertEquals("BridgeWood",cheapestRatedHotel.getName());
 
+    @Test
+    public void givenDateRange_ShouldReturn_bestRatedHotel() {
+        WhenAddedRatings_ShouldUpdate_EachHotel();
+        Hotel cheapestRatedHotel = reservation.getCheapestRatedHotel();
+        Assert.assertEquals("BridgeWood", cheapestRatedHotel.getName());
+
+    }
+
+    @Test
+    public void WhenAddedSpecialRates_ShouldUpdate_EachHotel() {
+        givenDateRange_ShouldReturn_bestRatedHotel();
+        ArrayList<Hotel> specialList = reservation.updateSpecialRates();
+        for (Hotel hotel : specialList) {
+            switch (hotel.getName()) {
+                case "LakeWood" -> {
+                    Assert.assertEquals(80, hotel.getSpecialWeekdayRates());
+                    Assert.assertEquals(80, hotel.getSpecialWeekendRates());
+                }
+                case "BridgeWood" -> {
+                    Assert.assertEquals(110, hotel.getSpecialWeekdayRates());
+                    Assert.assertEquals(50, hotel.getSpecialWeekendRates());
+                }
+
+                case "RidgeWood" -> {
+                    Assert.assertEquals(100, hotel.getSpecialWeekdayRates());
+                    Assert.assertEquals(40, hotel.getSpecialWeekendRates());
+                }
+            }
+        }
     }
 }

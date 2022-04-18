@@ -76,8 +76,7 @@ public class HotelReservation {
 
         while (startDate.compareTo(endDate) != 0) {
             switch (DayOfWeek.of(startDate.get(ChronoField.DAY_OF_WEEK))) {
-                case SATURDAY -> ++weekends;
-                case SUNDAY -> ++weekends;
+                case SATURDAY, SUNDAY -> ++weekends;
             }
             startDate = startDate.plusDays(1);
         }
@@ -125,10 +124,37 @@ public class HotelReservation {
     }
 
 
-    public Hotel getCheapestRatedHotel(LocalDate startDate, LocalDate endDate) {
+    public Hotel getCheapestRatedHotel() {
         Optional<Hotel> sortedHotelList = cheapestHotel.stream().max(Comparator.comparing(Hotel::getRatings));
         System.out.println("Cheapest Best Rated Hotel : \n" + sortedHotelList.get().getName() + ", Rating:" + sortedHotelList.get().getRatings() + " and Total Rates:$"+cheapestPrice);
         return sortedHotelList.get();
+    }
+
+    public ArrayList<Hotel> updateSpecialRates() {
+        ArrayList<Hotel> specialList = hotelList.stream().filter(n -> {
+            switch (n.getName()) {
+                case "LakeWood" -> {
+                    n.setSpecialWeekdayRates(80);
+                    n.setSpecialWeekendRates(80);
+                    System.out.println("For "+n.getName() + n.getSpecialWeekdayRates()+ " and "+n.getSpecialWeekendRates());
+                    return true;
+                }
+                case "BridgeWood" -> {
+                    n.setSpecialWeekdayRates(110);
+                    n.setSpecialWeekendRates(50);
+                    System.out.println("For "+n.getName() + n.getSpecialWeekdayRates()+ " and "+n.getSpecialWeekendRates());
+                    return true;
+                }
+                case "RidgeWood" -> {
+                    n.setSpecialWeekdayRates(100);
+                    n.setSpecialWeekendRates(40);
+                    System.out.println("For "+n.getName() + n.getSpecialWeekdayRates()+ " and "+n.getSpecialWeekendRates());
+                    return true;
+                }
+            }
+            return false;
+        }).collect(Collectors.toCollection(ArrayList::new));
+        return specialList;
     }
 }
 

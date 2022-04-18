@@ -3,6 +3,25 @@ public class Hotel {
     int weekDayRates;
     int weekEndRates;
     int ratings;
+    int specialWeekdayRates;
+
+    public int getSpecialWeekendRates() {
+        return specialWeekendRates;
+    }
+
+    public void setSpecialWeekendRates(int specialWeekendRates) {
+        this.specialWeekendRates = specialWeekendRates;
+    }
+
+    public int getSpecialWeekdayRates() {
+        return specialWeekdayRates;
+    }
+
+    public void setSpecialWeekdayRates(int specialWeekdayRates) {
+        this.specialWeekdayRates = specialWeekdayRates;
+    }
+
+    int specialWeekendRates;
 
     public Hotel(String name, int rates) {
         this.name = name;
